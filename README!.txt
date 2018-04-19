@@ -2,4 +2,3 @@ Phaser projektissani käytin reilusti hyödyksi phaser esimerkkejä ja rakensin ohj
 
 
 Lauri Laakkonen
-509655
