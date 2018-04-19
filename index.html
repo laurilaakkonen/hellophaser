@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>hello phaser!</title>
+        <script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+
+
+    window.onload = function() {
+
+      //Luodaan uusi peli ja asetetaan ruutu skaalautumaan ruudun mukaan
+      var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+
+
+        function preload () {
+
+          //Ladataan tarvittavat tiedostot ohjelmaan
+
+          game.load.bitmapFont('nokia', 'assets/nokia.png', 'assets/nokia.xml');
+
+          game.load.image('logo', 'assets/spurdo.png');
+
+          game.load.audio('song', ['assets/16bitsong.wav']);
+
+          game.load.image('face', 'assets/naama6.png');
+          game.load.image('cat', 'assets/kitten2.png');
+          game.load.image('drink', 'assets/es.png');
+
+        }
+
+        //Alustetaan muuttujia
+        var text1;
+        var music;
+        var logo;
+
+        function create () {
+
+          //Asetetaan music muuttujaan "song" tiedosto ja käynnistitään musiikki soimaan.
+          //Jostain syystä (ainakin omalla koneellani) musiikki ei aina ajaudu läpi, mutta päivittämällä useamman kerran se välillä toimii.
+          music = game.add.audio('song');
+          music.play();
+
+          //Asetetaan taustalle taustakuvalogo joka pysyy paikallaan taustalla ja keskellä ruutua
+          logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+          logo.anchor.setTo(0.5, 0.5);
+
+          //Luodaan uusi emitteri josta pursuaa hulvattomia kuvia itsestäni, kissasta ja energiajuomista
+          emitter = game.add.emitter(game.world.centerX, 0, 0);
+          emitter.makeParticles(['drink', 'cat', 'face']);
+          emitter.start(false, 5000, 120);
+
+          //Luodaan teksti joka kimpoilee ympäriinsä ruudun seinistä
+          text1 = game.add.bitmapText(200, 100, 'nokia', 'Wadaaaap', 64);
+          game.physics.arcade.enable([text1]);
+          text1.body.velocity.setTo(200, 200);
+          text1.body.collideWorldBounds = true;
+          text1.body.bounce.set(1);
+
+        }
+
+        //Update funktio tarkistaa osuuku teksti johonkin seinistä ja kommunikoi muiden osien kanssa, jotta kimpoilu toteutuisi
+        function update() {
+
+          game.physics.arcade.collide(text1);
+
+    }
+
+    };
+
+    </script>
+
+    </body>
+</html>
